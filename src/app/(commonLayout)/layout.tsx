@@ -1,3 +1,4 @@
+import CommonNavbar from "@/components/ui/CommonNavbar/CommonNavbar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,5 +12,10 @@ export default function CommonLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>Navbar{children}Footer</div>;
+  return (
+    <div>
+      <CommonNavbar />
+      {children}Footer
+    </div>
+  );
 }
