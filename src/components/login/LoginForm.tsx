@@ -10,16 +10,41 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useUserLogin } from "@/hooks/auth.hook";
 import { loginValidationSchema } from "@/schemas/auth.schema";
+import { IApiResponse } from "@/types";
+import { ILoginResponse } from "@/types/auth.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import AppForm from "../form/AppForm";
 import AppInput from "../form/AppInput";
 import { Label } from "../ui/label";
+import httpStatus from "http-status";
+import { toast } from "sonner";
+import { setTokens } from "@/services/AuthService";
+
+const defaultValues = {
+  email: "john.user@example.com",
+  password: "password123",
+};
 
 export function LoginForm() {
+  const { mutate: handleUserLogin } = useUserLogin();
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+    handleUserLogin(data, {
+      onSuccess: (res: IApiResponse<ILoginResponse>) => {
+        if (res.statusCode === httpStatus.OK) {
+          toast.success("Login successful!");
+          setTokens(res.data!.accessToken, res.data!.refreshToken);
+        } else {
+          toast.error(res.message);
+        }
+      },
+      onError: () => {
+        toast.error("Login failed. Please try again later");
+      },
+    });
   };
 
   return (
@@ -33,6 +58,7 @@ export function LoginForm() {
       <CardContent>
         <div className="grid gap-4">
           <AppForm
+            defaultValues={defaultValues}
             onSubmit={onSubmit}
             resolver={zodResolver(loginValidationSchema)}
           >
