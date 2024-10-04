@@ -5,19 +5,23 @@ import nexiosInstance from "@/lib/NexiosInstance";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
-import { ILoginResponse } from "@/types/auth.type";
+import { ILoginResponse, IRegisterResponse } from "@/types/auth.type";
 import { IApiResponse } from "@/types";
 import httpStatus from "http-status";
+import axiosInstance from "@/lib/AxiosInstance";
 
-export const registerUser = async (userData: FieldValues) => {
+export const registerUser = async (registrationData: FormData) => {
   try {
-    const { data } = await nexiosInstance.post("/auth/register", userData);
-    console.log(data);
+    const { data } = await axiosInstance.post<IApiResponse<IRegisterResponse>>(
+      "/auth/register",
+      registrationData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
 
-    // if (data.success) {
-    //   cookies().set("accessToken", data?.data?.accessToken);
-    //   cookies().set("refreshToken", data?.data?.refreshToken);
-    // }
+    if (data.statusCode === httpStatus.OK) {
+      cookies().set("accessToken", data.data?.accessToken as string);
+      cookies().set("refreshToken", data.data?.accessToken as string);
+    }
 
     return data;
   } catch (error: any) {

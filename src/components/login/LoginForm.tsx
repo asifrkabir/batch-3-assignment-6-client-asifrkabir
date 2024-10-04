@@ -51,8 +51,8 @@ export function LoginForm() {
           toast.error(res.message);
         }
       },
-      onError: () => {
-        toast.error("Login failed. Please try again later");
+      onError: (error) => {
+        toast.error(error.message || "Login failed. Please try again.");
       },
     });
   };
@@ -70,7 +70,7 @@ export function LoginForm() {
   return (
     <>
       {isPending && <LoadingSpinner />}
-      <Card className="mx-auto max-w-sm">
+      <Card className="mx-auto max-w-lg w-full m-4">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
@@ -119,7 +119,7 @@ export function LoginForm() {
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link href="#" className="underline">
+            <Link href="/register" className="underline">
               Sign up
             </Link>
           </div>

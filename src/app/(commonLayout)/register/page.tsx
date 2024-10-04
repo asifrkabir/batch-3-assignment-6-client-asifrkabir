@@ -1,9 +1,13 @@
 import { RegisterForm } from "@/components/register/RegisterForm";
+import LoadingSpinner from "@/components/ui/LoadingSpinner/LoadingSpinner";
+import { Suspense } from "react";
 
 const RegisterPage = () => {
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <RegisterForm />
+      <Suspense fallback={<LoadingSpinner />}>
+        <RegisterForm />
+      </Suspense>
     </div>
   );
 };

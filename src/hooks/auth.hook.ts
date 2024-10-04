@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation } from "@tanstack/react-query";
-import { loginUser, registerUser } from "../services/AuthService";
 import { FieldValues } from "react-hook-form";
-import { toast } from "sonner";
+import { loginUser, registerUser } from "../services/AuthService";
 
 export const useUserRegistration = () => {
-  return useMutation<any, Error, FieldValues>({
+  return useMutation<any, Error, FormData>({
     mutationKey: ["USER_REGISTRATION"],
     mutationFn: async (userData) => await registerUser(userData),
-    onSuccess: () => {
-      toast.success("User registration successful");
+    onSuccess: (data) => {
+      return data;
     },
     onError: (error) => {
-      toast.error(error.message);
+      return error;
     },
   });
 };
