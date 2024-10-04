@@ -10,33 +10,41 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useUser } from "@/context/user.provider";
 import { useUserLogin } from "@/hooks/auth.hook";
 import { loginValidationSchema } from "@/schemas/auth.schema";
 import { IApiResponse } from "@/types";
 import { ILoginResponse } from "@/types/auth.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import httpStatus from "http-status";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 import AppForm from "../form/AppForm";
 import AppInput from "../form/AppInput";
 import { Label } from "../ui/label";
-import httpStatus from "http-status";
-import { toast } from "sonner";
-import { setTokens } from "@/services/AuthService";
 
 const defaultValues = {
-  email: "john.user@example.com",
+  email: "john.user4@example.com",
   password: "password123",
 };
 
 export function LoginForm() {
-  const { mutate: handleUserLogin } = useUserLogin();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { setIsLoading: setUserLoading } = useUser();
+
+  const redirect = searchParams.get("redirect");
+
+  const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     handleUserLogin(data, {
       onSuccess: (res: IApiResponse<ILoginResponse>) => {
         if (res.statusCode === httpStatus.OK) {
           toast.success("Login successful!");
-          setTokens(res.data!.accessToken, res.data!.refreshToken);
+          setUserLoading(true);
         } else {
           toast.error(res.message);
         }
@@ -46,6 +54,16 @@ export function LoginForm() {
       },
     });
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        router.push("/");
+      }
+    }
+  }, [isPending, isSuccess]);
 
   return (
     <Card className="mx-auto max-w-sm">
