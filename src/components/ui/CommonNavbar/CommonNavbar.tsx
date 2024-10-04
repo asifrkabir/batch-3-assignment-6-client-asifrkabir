@@ -19,14 +19,14 @@ import CommonNavbarUser from "./CommonNavbarUser";
 
 const CommonNavbar = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white dark:border-gray-800 dark:bg-gray-950">
+    <header className="sticky top-0 z-50 w-full border-b bg-white dark:border-gray-800 dark:bg-black">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
         <Link href="#" className="flex items-center gap-2" prefetch={false}>
           <Image src={logo} alt="logo" width={40} height={40} />
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
           <Link
-            href="#"
+            href="/"
             className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
             prefetch={false}
           >
@@ -37,17 +37,17 @@ const CommonNavbar = () => {
             className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
             prefetch={false}
           >
-            About
-          </Link>
-          <Link
-            href="#"
-            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-            prefetch={false}
-          >
             Services
           </Link>
           <Link
-            href="#"
+            href="/about-us"
+            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+            prefetch={false}
+          >
+            About
+          </Link>
+          <Link
+            href="/contact-us"
             className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
             prefetch={false}
           >

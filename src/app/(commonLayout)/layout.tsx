@@ -1,3 +1,4 @@
+import CommonFooter from "@/components/ui/CommonFooter/CommonFooter";
 import CommonNavbar from "@/components/ui/CommonNavbar/CommonNavbar";
 import type { Metadata } from "next";
 
@@ -15,7 +16,8 @@ export default function CommonLayout({
   return (
     <div>
       <CommonNavbar />
-      {children}Footer
+      {children}
+      <CommonFooter />
     </div>
   );
 }
