@@ -15,7 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../assets/images/logo.png";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
-import CommonNavbarUser from "./CommonNavbarUser";
+import NavbarUser from "../NavbarUser/NavbarUser";
 
 const CommonNavbar = () => {
   return (
@@ -56,7 +56,7 @@ const CommonNavbar = () => {
         </nav>
         <div className="flex items-center gap-4">
           <DarkModeToggle />
-          <CommonNavbarUser />
+          <NavbarUser />
           <Sheet>
             <SheetTrigger asChild>
               <Button
