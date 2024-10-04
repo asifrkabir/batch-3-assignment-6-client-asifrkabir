@@ -12,20 +12,28 @@ import axiosInstance from "@/lib/AxiosInstance";
 
 export const registerUser = async (registrationData: FormData) => {
   try {
-    const { data } = await axiosInstance.post<IApiResponse<IRegisterResponse>>(
+    const { data } = await axiosInstance.post(
       "/auth/register",
       registrationData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
 
-    if (data.statusCode === httpStatus.OK) {
-      cookies().set("accessToken", data.data?.accessToken as string);
-      cookies().set("refreshToken", data.data?.accessToken as string);
+    const res = data as IApiResponse<IRegisterResponse>;
+
+    if (res.statusCode === httpStatus.CREATED) {
+      cookies().set("accessToken", res.data?.accessToken as string);
+      cookies().set("refreshToken", res.data?.accessToken as string);
     }
 
-    return data;
+    return res;
   } catch (error: any) {
-    throw new Error(error);
+    if (error.response) {
+      const responseData = error.response.data as IApiResponse<null>;
+
+      return responseData;
+    }
+
+    throw new Error(error.message || "Unknown error occurred");
   }
 };
 

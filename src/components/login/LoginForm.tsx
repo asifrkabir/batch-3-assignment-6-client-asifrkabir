@@ -18,7 +18,7 @@ import { ILoginResponse } from "@/types/auth.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import httpStatus from "http-status";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import AppForm from "../form/AppForm";
@@ -36,36 +36,43 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { setIsLoading: setUserLoading } = useUser();
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const redirect = searchParams.get("redirect");
 
-  const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
+  const { mutate: handleUserLogin, isPending } = useUserLogin();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
     handleUserLogin(data, {
       onSuccess: (res: IApiResponse<ILoginResponse>) => {
         if (res.statusCode === httpStatus.OK) {
-          toast.success("Login successful!");
+          setLoginSuccess(true);
           setUserLoading(true);
+
+          toast.success("Login successful!");
         } else {
+          setLoginSuccess(false);
+
           toast.error(res.message);
         }
       },
       onError: (error) => {
+        setLoginSuccess(false);
+
         toast.error(error.message || "Login failed. Please try again.");
       },
     });
   };
 
   useEffect(() => {
-    if (!isPending && isSuccess) {
+    if (!isPending && loginSuccess) {
       if (redirect) {
         router.push(redirect);
       } else {
         router.push("/");
       }
     }
-  }, [isPending, isSuccess, redirect, router]);
+  }, [isPending, loginSuccess, redirect, router]);
 
   return (
     <>
@@ -81,7 +88,7 @@ export function LoginForm() {
           <div className="grid gap-4">
             <AppForm
               defaultValues={defaultValues}
-              onSubmit={onSubmit}
+              onSubmit={handleSubmit}
               resolver={zodResolver(loginValidationSchema)}
             >
               <AppInput
