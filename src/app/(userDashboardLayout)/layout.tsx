@@ -1,5 +1,6 @@
 import DashboardNavbar from "@/components/ui/Dashboard/DashboardNavbar/DashboardNavbar";
 import DashboardSidebar from "@/components/ui/Dashboard/DashboardSidebar/DashboardSidebar";
+import { Cat, CircleUser, LineChart, Newspaper } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,6 +9,29 @@ export const metadata: Metadata = {
     "Your ultimate platform for pet care tips, stories, and nutrition advice. Explore and share knowledge to keep your pets happy and healthy.",
 };
 
+const navItems = [
+  {
+    label: "Newsfeed",
+    href: "/user-dashboard/news-feed",
+    icon: <Cat className="h-5 w-5" />,
+  },
+  {
+    label: "My Posts",
+    href: "/user-dashboard/my-posts",
+    icon: <Newspaper className="h-5 w-5" />,
+  },
+  {
+    label: "Profile",
+    href: "/user-dashboard/profile",
+    icon: <CircleUser className="h-5 w-5" />,
+  },
+  {
+    label: "Analytics",
+    href: "/user-dashboard/analytics",
+    icon: <LineChart className="h-5 w-5" />,
+  },
+];
+
 export default function DashboardLayout({
   children,
 }: Readonly<{
@@ -15,9 +39,9 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <DashboardSidebar />
+      <DashboardSidebar items={navItems} />
       <div className="flex flex-col">
-        <DashboardNavbar />
+        <DashboardNavbar items={navItems} />
         {children}
       </div>
     </div>
