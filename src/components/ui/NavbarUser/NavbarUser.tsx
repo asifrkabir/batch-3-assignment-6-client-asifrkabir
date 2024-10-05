@@ -49,7 +49,7 @@ const NavbarUser = () => {
               alt="Profile Picture"
               width={36}
               height={36}
-              className="rounded-full border border-yellow-500"
+              className="rounded-full border-2 border-yellow-500"
             />
           ) : (
             <CircleUser className="h-5 w-5" />
