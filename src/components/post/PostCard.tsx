@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { IPost } from "@/types";
+import { IApiResponse, IPost } from "@/types";
 import {
   CircleUser,
   LockOpen,
@@ -24,17 +24,71 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useProcesssVote } from "@/hooks/vote.hook";
+import httpStatus from "http-status";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface IProps {
   post: IPost;
 }
 
 const PostCard = ({ post }: IProps) => {
+  const { mutate: handleProcessVote, isPending: processVotePending } =
+    useProcesssVote();
+  const queryClient = useQueryClient();
+
   const maxContentLength = 1000;
   const maxPreviewLength = 100;
   const maxImagesToShow = 4;
 
   const handlePurchase = () => {};
+
+  const handleVoteClick = (voteType: "upvote" | "downvote") => {
+    if (voteType === "upvote") {
+      if (post.voteType === "upvote") {
+        post.upvotes -= 1;
+        post.voteType = "none";
+      } else if (post.voteType === "downvote") {
+        post.upvotes += 1;
+        post.downvotes -= 1;
+        post.voteType = "upvote";
+      } else {
+        post.upvotes += 1;
+        post.voteType = "upvote";
+      }
+    } else if (voteType === "downvote") {
+      if (post.voteType === "downvote") {
+        post.downvotes -= 1;
+        post.voteType = "none";
+      } else if (post.voteType === "upvote") {
+        post.downvotes += 1;
+        post.upvotes -= 1;
+        post.voteType = "downvote";
+      } else {
+        post.downvotes += 1;
+        post.voteType = "downvote";
+      }
+    }
+
+    const voteData = {
+      post: post._id,
+      voteType,
+    };
+
+    handleProcessVote(voteData, {
+      onSuccess: (res: IApiResponse<{ message: string }>) => {
+        if (res.statusCode === httpStatus.OK) {
+          queryClient.invalidateQueries({ queryKey: ["ALL_POSTS_NEWSFEED"] });
+        } else {
+          toast.error(res.message);
+        }
+      },
+      onError: (error) => {
+        toast.error(error.message || "Login failed. Please try again.");
+      },
+    });
+  };
 
   return (
     <Card className="relative flex flex-col rounded-lg border w-full h-auto">
@@ -153,6 +207,8 @@ const PostCard = ({ post }: IProps) => {
                     ? "text-emerald-600"
                     : "text-gray-600"
                 } hover:text-emerald-600`}
+                onClick={() => handleVoteClick("upvote")}
+                disabled={processVotePending}
               >
                 <SquareChevronUp
                   className={`h-5 w-5 ${
@@ -170,6 +226,8 @@ const PostCard = ({ post }: IProps) => {
                     ? "text-red-600"
                     : "text-gray-600"
                 } hover:text-red-600`}
+                onClick={() => handleVoteClick("downvote")}
+                disabled={processVotePending}
               >
                 <SquareChevronDown
                   className={`h-5 w-5 ${

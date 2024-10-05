@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { IPost } from "@/types";
+import { IApiResponse, IPost } from "@/types";
 import {
   CircleUser,
   LockOpen,
@@ -23,12 +23,66 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Badge } from "../ui/badge";
+import { useQueryClient } from "@tanstack/react-query";
+import { useProcesssVote } from "@/hooks/vote.hook";
+import httpStatus from "http-status";
+import { toast } from "sonner";
 
 interface IProps {
   post: IPost;
 }
 
 const PostDetailsCard = ({ post }: IProps) => {
+  const { mutate: handleProcessVote, isPending: processVotePending } =
+    useProcesssVote();
+  const queryClient = useQueryClient();
+
+  const handleVoteClick = (voteType: "upvote" | "downvote") => {
+    if (voteType === "upvote") {
+      if (post.voteType === "upvote") {
+        post.upvotes -= 1;
+        post.voteType = "none";
+      } else if (post.voteType === "downvote") {
+        post.upvotes += 1;
+        post.downvotes -= 1;
+        post.voteType = "upvote";
+      } else {
+        post.upvotes += 1;
+        post.voteType = "upvote";
+      }
+    } else if (voteType === "downvote") {
+      if (post.voteType === "downvote") {
+        post.downvotes -= 1;
+        post.voteType = "none";
+      } else if (post.voteType === "upvote") {
+        post.downvotes += 1;
+        post.upvotes -= 1;
+        post.voteType = "downvote";
+      } else {
+        post.downvotes += 1;
+        post.voteType = "downvote";
+      }
+    }
+
+    const voteData = {
+      post: post._id,
+      voteType,
+    };
+
+    handleProcessVote(voteData, {
+      onSuccess: (res: IApiResponse<{ message: string }>) => {
+        if (res.statusCode === httpStatus.OK) {
+          queryClient.invalidateQueries({ queryKey: ["ALL_POSTS_NEWSFEED"] });
+        } else {
+          toast.error(res.message);
+        }
+      },
+      onError: (error) => {
+        toast.error(error.message || "Login failed. Please try again.");
+      },
+    });
+  };
+
   if (!post.isPurchased) {
     return (
       <Card className="flex flex-col justify-center items-center rounded-lg border w-full h-auto p-8">
@@ -138,6 +192,8 @@ const PostDetailsCard = ({ post }: IProps) => {
                     ? "text-emerald-600"
                     : "text-gray-600"
                 } hover:text-emerald-600`}
+                onClick={() => handleVoteClick("upvote")}
+                disabled={processVotePending}
               >
                 <SquareChevronUp
                   className={`h-5 w-5 ${
@@ -155,6 +211,8 @@ const PostDetailsCard = ({ post }: IProps) => {
                     ? "text-red-600"
                     : "text-gray-600"
                 } hover:text-red-600`}
+                onClick={() => handleVoteClick("downvote")}
+                disabled={processVotePending}
               >
                 <SquareChevronDown
                   className={`h-5 w-5 ${
