@@ -18,6 +18,12 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface IProps {
   post: IPost;
@@ -31,7 +37,7 @@ const PostCard = ({ post }: IProps) => {
   const handlePurchase = () => {};
 
   return (
-    <Card className="flex flex-col rounded-lg border w-full h-auto">
+    <Card className="relative flex flex-col rounded-lg border w-full h-auto">
       {/* Header - Author Info */}
       <CardHeader className="flex flex-row justify-between items-center p-4">
         <div className="flex flex-row items-center">
@@ -53,10 +59,20 @@ const PostCard = ({ post }: IProps) => {
             </p>
           </div>
         </div>
+
         {post.isPremium && (
-          <div>
-            <Badge className="bg-[#059669]">Premium</Badge>
-          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Badge className="absolute -top-2 -right-2 bg-[#059669] text-white flex items-center">
+                  <span className="size-4">$</span>
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Premium Post</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
       </CardHeader>
 
@@ -106,6 +122,16 @@ const PostCard = ({ post }: IProps) => {
             </span>
           )}
         </p>
+
+        {post.category && (
+          <Badge
+            className={`${
+              post.category === "story" ? "bg-blue-500" : "bg-emerald-500"
+            } text-md`}
+          >
+            {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
+          </Badge>
+        )}
       </CardContent>
 
       {/* Footer - Action Buttons */}

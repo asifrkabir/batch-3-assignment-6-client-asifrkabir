@@ -14,9 +14,15 @@ import {
   SquareChevronUp,
 } from "lucide-react";
 import Image from "next/image";
-import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Badge } from "../ui/badge";
 
 interface IProps {
   post: IPost;
@@ -40,7 +46,7 @@ const PostDetailsCard = ({ post }: IProps) => {
   }
 
   return (
-    <Card className="flex flex-col rounded-lg border w-full h-auto">
+    <Card className="relative flex flex-col rounded-lg border w-full h-auto">
       {/* Header - Author Info */}
       <CardHeader className="flex flex-row justify-between items-center p-4">
         <div className="flex flex-row items-center">
@@ -62,10 +68,20 @@ const PostDetailsCard = ({ post }: IProps) => {
             </p>
           </div>
         </div>
+
         {post.isPremium && (
-          <div>
-            <Badge className="bg-[#059669]">Premium</Badge>
-          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Badge className="absolute -top-2 -right-2 bg-[#059669] text-white flex items-center">
+                  <span className="size-4">$</span>
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Premium Post</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
       </CardHeader>
 
@@ -91,12 +107,17 @@ const PostDetailsCard = ({ post }: IProps) => {
         )}
 
         {/* Full Content */}
-        <p className="text-sm text-default mb-4">
-          {post.isPurchased
-            ? post.content // Show full content if purchased
-            : `${post.content.slice(0, 100)}... Purchase to read more`}{" "}
-          {/* Short preview */}
-        </p>
+        <p className="text-sm text-default mb-4">{post.content}</p>
+
+        {post.category && (
+          <Badge
+            className={`${
+              post.category === "story" ? "bg-blue-500" : "bg-emerald-500"
+            } text-md`}
+          >
+            {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
+          </Badge>
+        )}
       </CardContent>
 
       {/* Footer - Action Buttons */}
