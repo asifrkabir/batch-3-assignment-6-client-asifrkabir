@@ -6,18 +6,6 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { IApiResponse, IPost } from "@/types";
-import {
-  CircleUser,
-  LockOpen,
-  SquareChevronDown,
-  SquareChevronUp,
-} from "lucide-react";
-import Image from "next/image";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
-import Link from "next/link";
 import {
   Tooltip,
   TooltipContent,
@@ -25,9 +13,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useProcesssVote } from "@/hooks/vote.hook";
-import httpStatus from "http-status";
-import { toast } from "sonner";
+import { IApiResponse, IPost } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
+import httpStatus from "http-status";
+import { CircleUser, SquareChevronDown, SquareChevronUp } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { toast } from "sonner";
+import PaymentModal from "../payment/PaymentModal";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 
 interface IProps {
   post: IPost;
@@ -41,8 +37,6 @@ const PostCard = ({ post }: IProps) => {
   const maxContentLength = 1000;
   const maxPreviewLength = 100;
   const maxImagesToShow = 4;
-
-  const handlePurchase = () => {};
 
   const handleVoteClick = (voteType: "upvote" | "downvote") => {
     if (voteType === "upvote") {
@@ -189,15 +183,9 @@ const PostCard = ({ post }: IProps) => {
       </CardContent>
 
       {/* Footer - Action Buttons */}
-      <CardFooter className="flex items-center justify-center p-4 border-t">
+      <CardFooter className="flex items-center p-4 border-t">
         {!post.isPurchased ? (
-          <Button
-            size={"sm"}
-            onClick={handlePurchase}
-            className="px-4 py-2 rounded-lg ml-auto bg-emerald-600 gap-x-2"
-          >
-            <LockOpen /> Purchase
-          </Button>
+          <PaymentModal post={post} />
         ) : (
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center justify-center space-x-4 h-5">

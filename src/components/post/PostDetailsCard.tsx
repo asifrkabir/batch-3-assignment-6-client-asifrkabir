@@ -6,27 +6,23 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { IApiResponse, IPost } from "@/types";
-import {
-  CircleUser,
-  LockOpen,
-  SquareChevronDown,
-  SquareChevronUp,
-} from "lucide-react";
-import Image from "next/image";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Badge } from "../ui/badge";
-import { useQueryClient } from "@tanstack/react-query";
 import { useProcesssVote } from "@/hooks/vote.hook";
+import { IApiResponse, IPost } from "@/types";
+import { useQueryClient } from "@tanstack/react-query";
 import httpStatus from "http-status";
+import { CircleUser, SquareChevronDown, SquareChevronUp } from "lucide-react";
+import Image from "next/image";
 import { toast } from "sonner";
+import PaymentModal from "../payment/PaymentModal";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 
 interface IProps {
   post: IPost;
@@ -89,12 +85,7 @@ const PostDetailsCard = ({ post }: IProps) => {
         <p className="text-lg font-semibold text-center mb-4">
           Purchase this post to unlock the full content.
         </p>
-        <Button
-          size="lg"
-          className="px-6 py-3 rounded-lg bg-emerald-600 gap-x-2"
-        >
-          <LockOpen /> Purchase
-        </Button>
+        <PaymentModal post={post} />
       </Card>
     );
   }
