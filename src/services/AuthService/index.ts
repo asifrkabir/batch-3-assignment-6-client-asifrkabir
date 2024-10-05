@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import nexiosInstance from "@/lib/NexiosInstance";
+import axiosInstance from "@/lib/AxiosInstance";
+import { IApiResponse } from "@/types";
+import { ILoginResponse, IRegisterResponse } from "@/types/auth.type";
+import httpStatus from "http-status";
+import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
-import { jwtDecode } from "jwt-decode";
-import { ILoginResponse, IRegisterResponse } from "@/types/auth.type";
-import { IApiResponse } from "@/types";
-import httpStatus from "http-status";
-import axiosInstance from "@/lib/AxiosInstance";
 
 export const registerUser = async (registrationData: FormData) => {
   try {
@@ -39,7 +38,7 @@ export const registerUser = async (registrationData: FormData) => {
 
 export const loginUser = async (userData: FieldValues) => {
   try {
-    const { data } = await nexiosInstance.post<IApiResponse<ILoginResponse>>(
+    const { data } = await axiosInstance.post<IApiResponse<ILoginResponse>>(
       "/auth/login",
       userData
     );
@@ -51,7 +50,13 @@ export const loginUser = async (userData: FieldValues) => {
 
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    if (error.response) {
+      const responseData = error.response.data as IApiResponse<null>;
+
+      return responseData;
+    }
+
+    throw new Error(error.message || "Unknown error occurred");
   }
 };
 
@@ -78,4 +83,22 @@ export const getCurrentUser = async () => {
 export const logout = () => {
   cookies().delete("accessToken");
   cookies().delete("refreshToken");
+};
+
+export const getNewAccessToken = async () => {
+  try {
+    const refreshToken = cookies().get("refreshToken")?.value;
+    const res = await axiosInstance({
+      url: "/auth/refresh-token",
+      method: "POST",
+      withCredentials: true,
+      headers: {
+        cookies: `refreshToken=${refreshToken}`,
+      },
+    });
+
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to get new access token");
+  }
 };

@@ -1,10 +1,9 @@
-import nexiosInstance from "@/lib/NexiosInstance";
+"use server";
+
+import axiosInstance from "@/lib/AxiosInstance";
 
 export const getAllPosts = async () => {
-  const { data } = await nexiosInstance.get("/post", {
-    cache: "no-store",
-    next: {},
-  });
+  const { data } = await axiosInstance.get("/posts");
 
   return data;
 };
