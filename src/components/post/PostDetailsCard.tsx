@@ -17,18 +17,27 @@ import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
-import Link from "next/link";
 
 interface IProps {
   post: IPost;
 }
 
-const PostCard = ({ post }: IProps) => {
-  const maxContentLength = 1000;
-  const maxPreviewLength = 100;
-  const maxImagesToShow = 4;
-
-  const handlePurchase = () => {};
+const PostDetailsCard = ({ post }: IProps) => {
+  if (!post.isPurchased) {
+    return (
+      <Card className="flex flex-col justify-center items-center rounded-lg border w-full h-auto p-8">
+        <p className="text-lg font-semibold text-center mb-4">
+          Purchase this post to unlock the full content.
+        </p>
+        <Button
+          size="lg"
+          className="px-6 py-3 rounded-lg bg-emerald-600 gap-x-2"
+        >
+          <LockOpen /> Purchase
+        </Button>
+      </Card>
+    );
+  }
 
   return (
     <Card className="flex flex-col rounded-lg border w-full h-auto">
@@ -60,51 +69,33 @@ const PostCard = ({ post }: IProps) => {
         )}
       </CardHeader>
 
-      {/* Body - Image and Content Preview */}
+      {/* Body - Image and Full Content */}
       <CardContent className="p-4">
         {/* Image Grid */}
         {post.imageUrls && post.imageUrls.length > 0 && (
-          <div className="grid grid-cols-2 gap-2 mb-8">
-            {post.imageUrls.slice(0, maxImagesToShow).map((imageUrl, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2 mb-8">
+            {post.imageUrls.map((imageUrl, index) => (
               <div key={index} className="relative overflow-hidden">
                 <Image
                   src={imageUrl}
                   alt={`Post image ${index + 1}`}
-                  width={600}
+                  width={800}
                   height={150}
                   className={`${
                     !post.isPurchased ? "blur-sm" : ""
                   } object-cover transition duration-300 rounded-sm`}
                 />
-                {/* Overlay if more images */}
-                {index === maxImagesToShow - 1 &&
-                  post.imageUrls!.length > maxImagesToShow && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-lg font-bold">
-                      +{post.imageUrls!.length - maxImagesToShow}
-                    </div>
-                  )}
               </div>
             ))}
           </div>
         )}
 
-        {/* Content Preview */}
+        {/* Full Content */}
         <p className="text-sm text-default mb-4">
           {post.isPurchased
-            ? `${post.content.slice(0, maxContentLength)}`
-            : `${post.content.slice(0, maxPreviewLength)}`}
-          {post.isPurchased && post.content.length > maxContentLength && (
-            <Link href={`/user-dashboard/news-feed/${post._id}`}>
-              <span className="text-emerald-600 cursor-pointer hover:underline">
-                ...Read more
-              </span>
-            </Link>
-          )}
-          {!post.isPurchased && post.content.length > maxPreviewLength && (
-            <span className="text-emerald-600 cursor-pointer">
-              ...Purchase to read more
-            </span>
-          )}
+            ? post.content // Show full content if purchased
+            : `${post.content.slice(0, 100)}... Purchase to read more`}{" "}
+          {/* Short preview */}
         </p>
       </CardContent>
 
@@ -113,10 +104,9 @@ const PostCard = ({ post }: IProps) => {
         {!post.isPurchased ? (
           <Button
             size={"sm"}
-            onClick={handlePurchase}
-            className="px-4 py-2 rounded-lg ml-auto bg-emerald-600 gap-x-2"
+            className="px-4 py-2 rounded-lg ml-auto bg-emerald-600"
           >
-            <LockOpen /> Purchase
+            Purchase
           </Button>
         ) : (
           <div className="flex items-center justify-between w-full">
@@ -153,11 +143,6 @@ const PostCard = ({ post }: IProps) => {
                 <span className="ml-1">{post.downvotes}</span>
               </button>
             </div>
-            <div>
-              <Link href={`/user-dashboard/news-feed/${post._id}`}>
-                <Button size={"sm"}>View Details</Button>
-              </Link>
-            </div>
           </div>
         )}
       </CardFooter>
@@ -165,4 +150,4 @@ const PostCard = ({ post }: IProps) => {
   );
 };
 
-export default PostCard;
+export default PostDetailsCard;
