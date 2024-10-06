@@ -11,3 +11,8 @@ export interface IErrorSource {
   path: string;
   message: string;
 }
+
+export type IQueryParam = {
+  name: string;
+  value: boolean | React.Key;
+};

@@ -2,7 +2,7 @@
 "use server";
 
 import axiosInstance from "@/lib/AxiosInstance";
-import { IApiResponse, IPost } from "@/types";
+import { IApiResponse, IPost, IQueryParam } from "@/types";
 
 export const getAllPosts = async () => {
   try {
@@ -20,10 +20,19 @@ export const getAllPosts = async () => {
   }
 };
 
-export const getAllPostsForNewsfeed = async () => {
+export const getAllPostsForNewsfeed = async (params?: IQueryParam[]) => {
   try {
+    const queryParams = new URLSearchParams();
+
+    if (params) {
+      params.forEach((item) => {
+        queryParams.append(item.name, item.value as string);
+      });
+    }
+
     const { data } = await axiosInstance.get<IApiResponse<IPost[]>>(
-      "/posts/newsfeed"
+      "/posts/newsfeed",
+      { params: queryParams }
     );
 
     return data;

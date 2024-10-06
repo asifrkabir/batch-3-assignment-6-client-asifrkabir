@@ -1,12 +1,28 @@
 "use client";
 
 import { useGetAllPostsForNewsfeed } from "@/hooks/post.hook";
-import PostCard from "./PostCard";
 import { Button } from "../ui/button";
+import PostCard from "./PostCard";
 import PostCardLoadingSkeleton from "./PostCardLoadingSkeleton";
+import { IQueryParam } from "@/types";
+import { useEffect, useState } from "react";
+import SearchFilterNewsfeed from "./SearchFilterNewsfeed";
 
 const PostsContainer = () => {
-  const { data: postData, isLoading } = useGetAllPostsForNewsfeed();
+  const [params, setParams] = useState<IQueryParam[]>([
+    { name: "sort", value: "-upvotes" },
+  ]);
+
+  const {
+    data: postData,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetAllPostsForNewsfeed(params);
+
+  useEffect(() => {
+    refetch();
+  }, [params, refetch]);
 
   if (isLoading) {
     return (
@@ -20,6 +36,16 @@ const PostsContainer = () => {
 
   return (
     <div>
+      <SearchFilterNewsfeed setParams={setParams} />
+
+      {isFetching && (
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4 items-start w-full">
+          {Array.from({ length: 4 }).map((_, idx) => (
+            <PostCardLoadingSkeleton key={idx} />
+          ))}
+        </div>
+      )}
+
       {postData?.data ? (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4 w-full items-start">
           {postData?.data.map((post) => (

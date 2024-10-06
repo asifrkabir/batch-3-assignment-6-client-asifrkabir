@@ -85,7 +85,7 @@ const PostCard = ({ post }: IProps) => {
   };
 
   return (
-    <Card className="relative flex flex-col rounded-lg border w-full h-auto">
+    <Card className="relative flex flex-col rounded-lg border w-full h-auto transition-shadow hover:shadow-md">
       {/* Header - Author Info */}
       <CardHeader className="flex flex-row justify-between items-center p-4">
         <div className="flex flex-row items-center">

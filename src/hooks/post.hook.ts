@@ -3,6 +3,7 @@ import {
   getAllPostsForNewsfeed,
   getPostByIdForUser,
 } from "@/services/PostService";
+import { IQueryParam } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetAllPosts = () => {
@@ -12,10 +13,11 @@ export const useGetAllPosts = () => {
   });
 };
 
-export const useGetAllPostsForNewsfeed = () => {
+export const useGetAllPostsForNewsfeed = (params?: IQueryParam[]) => {
   return useQuery({
     queryKey: ["ALL_POSTS_NEWSFEED"],
-    queryFn: async () => await getAllPostsForNewsfeed(),
+    queryFn: async () => await getAllPostsForNewsfeed(params),
+    enabled: false,
   });
 };
 
