@@ -6,12 +6,15 @@ import { useEffect, useState } from "react";
 import { AddCommentModal } from "./AddComment/AddCommentModal";
 import CommentCard from "./CommentCard";
 import CommentCardLoadingSkeleton from "./CommentCardLoadingSkeleton";
+import { useUser } from "@/context/user.provider";
 
 interface IProps {
   postId: string;
 }
 
 const CommentsContainer = ({ postId }: IProps) => {
+  const { user, isLoading: isUserLoading } = useUser();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [params, setParams] = useState<IQueryParam[]>([
     { name: "post", value: postId },
@@ -31,7 +34,7 @@ const CommentsContainer = ({ postId }: IProps) => {
     }
   }, [postId, refetch]);
 
-  if (isLoading) {
+  if (isLoading || isUserLoading) {
     return (
       <div className="flex flex-col gap-4 items-start w-full">
         {Array.from({ length: 3 }).map((_, idx) => (
@@ -59,7 +62,11 @@ const CommentsContainer = ({ postId }: IProps) => {
       {commentsData?.data && commentsData?.data?.length > 0 ? (
         <div className="flex flex-col gap-4 w-full items-start">
           {commentsData.data.map((comment) => (
-            <CommentCard key={comment._id} comment={comment} />
+            <CommentCard
+              key={comment._id}
+              comment={comment}
+              loggedInUser={user!}
+            />
           ))}
         </div>
       ) : (
