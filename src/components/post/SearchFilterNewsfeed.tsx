@@ -1,8 +1,5 @@
 "use client";
 
-import { IQueryParam } from "@/types";
-import { useForm, useWatch } from "react-hook-form";
-import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -11,16 +8,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useDebounce from "@/hooks/debounce.hook";
+import { IQueryParam } from "@/types";
+import { ArrowDownUp } from "lucide-react";
 import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { Input } from "../ui/input";
+import { Switch } from "../ui/switch";
 
 interface SearchFilterNewsfeedProps {
   setParams: React.Dispatch<React.SetStateAction<IQueryParam[]>>;
 }
 
 const SearchFilterNewsfeed = ({ setParams }: SearchFilterNewsfeedProps) => {
-  const { register, control, setValue } = useForm();
-  const searchTerm = useDebounce(useWatch({ control, name: "searchTerm" }));
-  const category = useWatch({ control, name: "category" });
+  const { register, setValue, watch } = useForm();
+  const searchTerm = useDebounce(watch("searchTerm"));
+  const category = watch("category");
+  const sort = watch("sort");
+  const isPremium = watch("isPremium");
 
   const updateParams = useCallback(
     (name: string, value: boolean | React.Key) => {
@@ -46,31 +50,77 @@ const SearchFilterNewsfeed = ({ setParams }: SearchFilterNewsfeedProps) => {
   }, [searchTerm, updateParams]);
 
   useEffect(() => {
-    if (category) {
+    if (category === "all") {
+      setParams((prev) => prev.filter((param) => param.name !== "category"));
+    } else if (category) {
       updateParams("category", category);
     }
-  }, [category, updateParams]);
+  }, [category, setParams, updateParams]);
+
+  useEffect(() => {
+    if (sort) {
+      updateParams("sort", sort);
+    }
+  }, [sort, updateParams]);
+
+  useEffect(() => {
+    if (isPremium !== undefined) {
+      if (isPremium) {
+        updateParams("isPremium", !isPremium);
+      } else {
+        setParams((prev) => prev.filter((param) => param.name !== "isPremium"));
+      }
+    }
+  }, [isPremium, setParams, updateParams]);
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4">
+    // <div className="flex flex-col md:flex-row items-start sm:items-center gap-4 p-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
       <Input
         type="text"
         {...register("searchTerm")}
         placeholder="Search posts..."
         className="max-w-xs"
       />
+
       <Select
         value={category}
         onValueChange={(value) => setValue("category", value)}
       >
-        <SelectTrigger className="max-w-xs w-full sm:w-40">
+        <SelectTrigger className="max-w-xs">
           <SelectValue placeholder="Select Category" />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="all">All</SelectItem>
           <SelectItem value="tip">Tip</SelectItem>
           <SelectItem value="story">Story</SelectItem>
         </SelectContent>
       </Select>
+
+      <Select
+        value={sort || "-upvotes"}
+        onValueChange={(value) => setValue("sort", value)}
+      >
+        <SelectTrigger className="max-w-xs">
+          <ArrowDownUp className="text-muted-foreground size-4" />
+          <SelectValue placeholder="Sort by" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="-upvotes">Upvotes (Descending)</SelectItem>
+          <SelectItem value="upvotes">Upvotes (Ascending)</SelectItem>
+          <SelectItem value="-createdAt">Date (Newest First)</SelectItem>
+          <SelectItem value="createdAt">Date (Oldest First)</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <div className="flex items-center gap-2">
+        <Switch
+          {...register("isPremium")}
+          onCheckedChange={(checked) => setValue("isPremium", checked)}
+          color=""
+        />
+        <label className="text-sm">Show only free posts</label>
+      </div>
     </div>
   );
 };
