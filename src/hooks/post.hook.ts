@@ -24,8 +24,11 @@ export const useGetAllPostsForNewsfeed = (params?: IQueryParam[]) => {
 
 export const useGetPostByIdForUser = (postId: string) => {
   return useQuery({
-    queryKey: [],
+    queryKey: ["GET_POST_BY_ID", postId],
     queryFn: async () => await getPostByIdForUser(postId),
+    enabled: !!postId,
+    refetchOnMount: "always",
+    staleTime: 0,
   });
 };
 
