@@ -64,3 +64,23 @@ export const getPostByIdForUser = async (postId: string) => {
     throw new Error(error.message || "Unknown error occurred");
   }
 };
+
+export const createPost = async (postData: FormData) => {
+  try {
+    const { data } = await axiosInstance.post<IApiResponse<IPost>>(
+      "/posts",
+      postData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    return data;
+  } catch (error: any) {
+    if (error.response) {
+      const responseData = error.response.data as IApiResponse<null>;
+
+      return responseData;
+    }
+
+    throw new Error(error.message || "Unknown error occurred");
+  }
+};

@@ -24,7 +24,7 @@ const SearchFilterNewsfeed = ({ setParams }: SearchFilterNewsfeedProps) => {
   const searchTerm = useDebounce(watch("searchTerm"));
   const category = watch("category");
   const sort = watch("sort");
-  const isPremium = watch("isPremium");
+  const isFree = watch("isFree");
 
   const updateParams = useCallback(
     (name: string, value: boolean | React.Key) => {
@@ -62,19 +62,18 @@ const SearchFilterNewsfeed = ({ setParams }: SearchFilterNewsfeedProps) => {
       updateParams("sort", sort);
     }
   }, [sort, updateParams]);
-
+  
   useEffect(() => {
-    if (isPremium !== undefined) {
-      if (isPremium) {
-        updateParams("isPremium", !isPremium);
+    if (isFree !== undefined && isFree !== "on") {
+      if (isFree) {
+        updateParams("isPremium", false);
       } else {
         setParams((prev) => prev.filter((param) => param.name !== "isPremium"));
       }
     }
-  }, [isPremium, setParams, updateParams]);
+  }, [isFree, setParams, updateParams]);
 
   return (
-    // <div className="flex flex-col md:flex-row items-start sm:items-center gap-4 p-4">
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
       <Input
         type="text"
@@ -115,9 +114,8 @@ const SearchFilterNewsfeed = ({ setParams }: SearchFilterNewsfeedProps) => {
 
       <div className="flex items-center gap-2">
         <Switch
-          {...register("isPremium")}
-          onCheckedChange={(checked) => setValue("isPremium", checked)}
-          color=""
+          {...register("isFree")}
+          onCheckedChange={(checked) => setValue("isFree", checked)}
         />
         <label className="text-sm">Show only free posts</label>
       </div>
