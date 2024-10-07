@@ -43,7 +43,7 @@ export function RegisterForm() {
   const { setIsLoading: setUserLoading } = useUser();
   const { mutate: handleUserRegister, isPending } = useUserRegistration();
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageAdd = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
 
     setImageFiles([file]);
@@ -151,11 +151,10 @@ export function RegisterForm() {
                   Upload profile picture
                 </label>
                 <input
-                  multiple
                   className="hidden"
                   id="image"
                   type="file"
-                  onChange={(e) => handleImageChange(e)}
+                  onChange={(e) => handleImageAdd(e)}
                 />
               </div>
 

@@ -27,7 +27,10 @@ export function AddPostModal() {
           Add Post
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-1/2">
+      {/* <DialogContent className="min-w-1/2"> */}
+      <DialogContent
+        className={"lg:max-w-screen-lg overflow-y-scroll max-h-screen"}
+      >
         <DialogHeader>
           <DialogTitle>Add Post</DialogTitle>
           <VisuallyHidden>
