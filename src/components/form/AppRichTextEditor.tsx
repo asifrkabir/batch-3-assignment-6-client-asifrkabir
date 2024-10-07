@@ -1,7 +1,8 @@
-import React from "react";
-import { useFormContext, Controller } from "react-hook-form";
-import ReactQuill from "react-quill";
+import dynamic from "next/dynamic";
+import { Controller, useFormContext } from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 interface AppRichTextEditorProps {
   name: string;
