@@ -16,14 +16,20 @@ import { useProcesssVote } from "@/hooks/vote.hook";
 import { IApiResponse, IPost } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 import httpStatus from "http-status";
-import { CircleUser, SquareChevronDown, SquareChevronUp } from "lucide-react";
+import {
+  CircleUser,
+  Eye,
+  SquareChevronDown,
+  SquareChevronUp,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
-import PaymentModal from "../payment/PaymentModal";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
+import PaymentModal from "../../payment/PaymentModal";
+import { Badge } from "../../ui/badge";
+import { Button } from "../../ui/button";
+import { Separator } from "../../ui/separator";
+import styles from "./PostCard.module.css";
 
 interface IProps {
   post: IPost;
@@ -128,13 +134,13 @@ const PostCard = ({ post }: IProps) => {
       <CardContent className="p-4">
         {/* Image Grid */}
         {post.imageUrls && post.imageUrls.length > 0 && (
-          <div className="grid grid-cols-2 gap-2 mb-8">
+          <div className="grid xs:grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2 mb-8">
             {post.imageUrls.slice(0, maxImagesToShow).map((imageUrl, index) => (
               <div key={index} className="relative overflow-hidden">
                 <Image
                   src={imageUrl}
                   alt={`Post image ${index + 1}`}
-                  width={600}
+                  width={1920}
                   height={150}
                   className={`${
                     !post.isPurchased ? "blur-sm" : ""
@@ -153,10 +159,15 @@ const PostCard = ({ post }: IProps) => {
         )}
 
         {/* Content Preview */}
-        <p className="text-sm text-default mb-4">
-          {post.isPurchased
-            ? `${post.content.slice(0, maxContentLength)}`
-            : `${post.content.slice(0, maxPreviewLength)}`}
+        <div className="text-sm text-default mb-4">
+          <div
+            className={styles.richText}
+            dangerouslySetInnerHTML={{
+              __html: post.isPurchased
+                ? post.content.slice(0, maxContentLength)
+                : post.content.slice(0, maxPreviewLength),
+            }}
+          />
           {post.isPurchased && post.content.length > maxContentLength && (
             <Link href={`/user-dashboard/news-feed/${post._id}`}>
               <span className="text-emerald-600 cursor-pointer hover:underline">
@@ -169,7 +180,7 @@ const PostCard = ({ post }: IProps) => {
               ...Purchase to read more
             </span>
           )}
-        </p>
+        </div>
 
         {post.category && (
           <Badge
@@ -227,7 +238,9 @@ const PostCard = ({ post }: IProps) => {
             </div>
             <div>
               <Link href={`/user-dashboard/news-feed/${post._id}`}>
-                <Button size={"sm"}>View Details</Button>
+                <Button size={"sm"}>
+                  <Eye className="mr-1" /> View Details
+                </Button>
               </Link>
             </div>
           </div>

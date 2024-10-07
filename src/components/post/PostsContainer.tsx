@@ -4,7 +4,7 @@ import { useGetAllPostsForNewsfeed } from "@/hooks/post.hook";
 import { IQueryParam } from "@/types";
 import { useEffect, useState } from "react";
 import { AddPostModal } from "./AddPost/AddPostModal";
-import PostCard from "./PostCard";
+import PostCard from "./PostCard/PostCard";
 import PostCardLoadingSkeleton from "./PostCardLoadingSkeleton";
 import SearchFilterNewsfeed from "./SearchFilterNewsfeed";
 
@@ -26,7 +26,7 @@ const PostsContainer = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4 items-start w-full">
+      <div className="grid grid-cols-1 gap-8 p-4 items-start w-full">
         {Array.from({ length: 4 }).map((_, idx) => (
           <PostCardLoadingSkeleton key={idx} />
         ))}
@@ -39,7 +39,7 @@ const PostsContainer = () => {
       <SearchFilterNewsfeed setParams={setParams} />
 
       {isFetching && (
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4 items-start w-full">
+        <div className="grid grid-cols-1 gap-8 p-4 items-start w-full">
           {Array.from({ length: 4 }).map((_, idx) => (
             <PostCardLoadingSkeleton key={idx} />
           ))}
@@ -47,7 +47,7 @@ const PostsContainer = () => {
       )}
 
       {postData?.data && postData?.data?.length > 0 ? (
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4 w-full items-start">
+        <div className="grid grid-cols-1 gap-8 p-4 w-full items-start">
           {postData?.data.map((post) => (
             <PostCard key={post._id} post={post} />
           ))}

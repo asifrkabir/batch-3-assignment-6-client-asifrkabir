@@ -19,10 +19,11 @@ import httpStatus from "http-status";
 import { CircleUser, SquareChevronDown, SquareChevronUp } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import PaymentModal from "../payment/PaymentModal";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
+import PaymentModal from "../../payment/PaymentModal";
+import { Badge } from "../../ui/badge";
+import { Button } from "../../ui/button";
+import { Separator } from "../../ui/separator";
+import styles from "./PostDetailsCard.module.css";
 
 interface IProps {
   post: IPost;
@@ -134,7 +135,7 @@ const PostDetailsCard = ({ post }: IProps) => {
       <CardContent className="p-4">
         {/* Image Grid */}
         {post.imageUrls && post.imageUrls.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2 mb-8">
+          <div className="grid xs:grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2 mb-8">
             {post.imageUrls.map((imageUrl, index) => (
               <div key={index} className="relative overflow-hidden">
                 <Image
@@ -152,7 +153,12 @@ const PostDetailsCard = ({ post }: IProps) => {
         )}
 
         {/* Full Content */}
-        <p className="text-sm text-default mb-4">{post.content}</p>
+        <div className="text-sm text-default mb-4">
+          <div
+            className={styles.richText}
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </div>
 
         {post.category && (
           <Badge

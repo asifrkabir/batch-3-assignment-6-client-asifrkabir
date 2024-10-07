@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetPostByIdForUser } from "@/hooks/post.hook";
-import PostDetailsCard from "@/components/post/PostDetailsCard";
+import PostDetailsCard from "@/components/post/PostDetailsCard/PostDetailsCard";
 import { useParams } from "next/navigation";
 import React from "react";
 import PostCardLoadingSkeleton from "@/components/post/PostCardLoadingSkeleton";
