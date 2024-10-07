@@ -28,7 +28,7 @@ const CommentCard = ({ comment }: CommentCardProps) => {
         <div>
           <p className="text-sm font-medium">{user.name}</p>
           <p className="text-xs text-muted-foreground">
-            {formatDistanceToNow(new Date(createdAt))} ago
+            {formatDistanceToNow(new Date(createdAt!))} ago
           </p>
         </div>
       </div>

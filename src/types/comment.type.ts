@@ -1,10 +1,10 @@
 import { IUser } from "./user.type";
 
 export interface IComment {
-  _id: string;
+  _id?: string;
   post: string;
-  user: string | IUser;
+  user?: string | IUser;
   content: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -85,7 +85,7 @@ const PostCard = ({ post }: IProps) => {
         }
       },
       onError: (error) => {
-        toast.error(error.message || "Login failed. Please try again.");
+        toast.error(error.message || "Voting failed. Please try again.");
       },
     });
   };

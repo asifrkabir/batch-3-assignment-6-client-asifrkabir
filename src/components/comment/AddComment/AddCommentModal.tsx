@@ -10,10 +10,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { AddPostForm } from "./AddPostForm";
 import { useState } from "react";
+import { AddCommentForm } from "./AddCommentForm";
 
-export function AddPostModal() {
+interface IProps {
+  postId: string;
+}
+
+export function AddCommentModal({ postId }: IProps) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -24,20 +28,20 @@ export function AddPostModal() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-[#FCBE4F] hover:bg-[#e6a93c] transition text-black">
-          Add Post
+          Add Comment
         </Button>
       </DialogTrigger>
       <DialogContent
         className={"lg:max-w-screen-lg overflow-y-scroll max-h-screen"}
       >
         <DialogHeader>
-          <DialogTitle>Add Post</DialogTitle>
+          <DialogTitle>Add Comment</DialogTitle>
           <VisuallyHidden>
-            <DialogDescription>Add Post Details</DialogDescription>
+            <DialogDescription>Add Comment Details</DialogDescription>
           </VisuallyHidden>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <AddPostForm closeModal={handleClose} />
+          <AddCommentForm postId={postId} closeModal={handleClose} />
         </div>
       </DialogContent>
     </Dialog>
