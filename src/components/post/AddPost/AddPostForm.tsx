@@ -142,7 +142,7 @@ export function AddPostForm({ closeModal }: IProps) {
                 imagePreviews.map((imageDataUrl, index) => (
                   <div
                     key={index}
-                    className="relative size-32 border-2 border-dashed border-default-300 p-2"
+                    className="relative size-32 border-2 border-dashed border-default-300 p-2 group"
                   >
                     <img
                       className="h-full w-full object-cover object-center"
@@ -152,7 +152,10 @@ export function AddPostForm({ closeModal }: IProps) {
 
                     <button
                       className="absolute top-2 right-2 bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      onClick={() => handleImageDelete(index)}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleImageDelete(index);
+                      }}
                     >
                       <Trash2 className="text-white w-5 h-5" />
                     </button>
