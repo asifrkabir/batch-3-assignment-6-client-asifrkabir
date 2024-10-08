@@ -27,7 +27,7 @@ const navItems = [
   },
 ];
 
-export default function DashboardLayout({
+export default function UserDashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -1,6 +1,6 @@
 import DashboardNavbar from "@/components/ui/Dashboard/DashboardNavbar/DashboardNavbar";
 import DashboardSidebar from "@/components/ui/Dashboard/DashboardSidebar/DashboardSidebar";
-import { Cat, CircleUser, LineChart, Newspaper } from "lucide-react";
+import { CircleUser, CreditCard, Newspaper, UserCog } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,28 +11,28 @@ export const metadata: Metadata = {
 
 const navItems = [
   {
-    label: "Newsfeed",
-    href: "/user-dashboard/news-feed",
-    icon: <Cat className="h-5 w-5" />,
+    label: "User Management",
+    href: "/admin-dashboard/user-management",
+    icon: <UserCog className="h-5 w-5" />,
   },
   {
-    label: "My Posts",
-    href: "/user-dashboard/my-posts",
+    label: "Content Management",
+    href: "/admin-dashboard/content-management",
     icon: <Newspaper className="h-5 w-5" />,
   },
   {
     label: "Profile",
-    href: "/user-dashboard/profile",
+    href: "/admin-dashboard/profile",
     icon: <CircleUser className="h-5 w-5" />,
   },
   {
-    label: "Analytics",
-    href: "/user-dashboard/analytics",
-    icon: <LineChart className="h-5 w-5" />,
+    label: "Payment History",
+    href: "/admin-dashboard/payment-history",
+    icon: <CreditCard className="h-5 w-5" />,
   },
 ];
 
-export default function DashboardLayout({
+export default function AdminDashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
