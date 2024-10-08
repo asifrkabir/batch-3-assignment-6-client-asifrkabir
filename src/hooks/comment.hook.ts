@@ -46,7 +46,7 @@ export const useUpdateComment = () => {
 
 export const useDeleteComment = () => {
   return useMutation<any, Error, IComment>({
-    mutationKey: ["UPDATE_COMMENT"],
+    mutationKey: ["DELETE_COMMENT"],
     mutationFn: async (commentData) => await deleteComment(commentData),
     onSuccess: (data) => {
       return data;

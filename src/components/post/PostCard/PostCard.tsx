@@ -13,14 +13,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useProcesssVote } from "@/hooks/vote.hook";
-import { IApiResponse, IPost } from "@/types";
-import { useQueryClient } from "@tanstack/react-query";
+import { IApiResponse, IPost, IUser } from "@/types";
 import httpStatus from "http-status";
 import {
   CircleUser,
   Eye,
+  Pencil,
   SquareChevronDown,
   SquareChevronUp,
+  Trash2,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,12 +34,13 @@ import styles from "./PostCard.module.css";
 
 interface IProps {
   post: IPost;
+  loggedInUser?: IUser;
 }
 
-const PostCard = ({ post }: IProps) => {
+const PostCard = ({ post, loggedInUser }: IProps) => {
   const { mutate: handleProcessVote, isPending: processVotePending } =
     useProcesssVote();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const maxContentLength = 1000;
   const maxPreviewLength = 100;
@@ -79,7 +81,7 @@ const PostCard = ({ post }: IProps) => {
     handleProcessVote(voteData, {
       onSuccess: (res: IApiResponse<{ message: string }>) => {
         if (res.statusCode === httpStatus.OK) {
-          queryClient.invalidateQueries({ queryKey: ["ALL_POSTS_NEWSFEED"] });
+          // queryClient.invalidateQueries({ queryKey: ["ALL_POSTS_NEWSFEED"] });
         } else {
           toast.error(res.message);
         }
@@ -113,6 +115,19 @@ const PostCard = ({ post }: IProps) => {
             </p>
           </div>
         </div>
+
+        <div className="flex-grow" />
+
+        {loggedInUser && loggedInUser.userId === post.author._id && (
+          <div className="flex flex-row items-center">
+            <Button className="text-default bg-default hover:bg-muted-foreground">
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Button className="text-red-500 bg-default">
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
 
         {post.isPremium && (
           <TooltipProvider>

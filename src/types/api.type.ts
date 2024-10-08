@@ -5,6 +5,7 @@ export interface IApiResponse<T> {
   data?: T;
   errorSources?: IErrorSource[];
   error?: string;
+  meta?: IMeta;
 }
 
 export interface IErrorSource {
@@ -16,3 +17,10 @@ export type IQueryParam = {
   name: string;
   value: boolean | React.Key;
 };
+
+export interface IMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPage: number;
+}

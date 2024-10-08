@@ -1,5 +1,6 @@
 "use client";
 
+import CommentsContainer from "@/components/comment/CommentsContainer";
 import {
   Card,
   CardContent,
@@ -14,7 +15,6 @@ import {
 } from "@/components/ui/tooltip";
 import { useProcesssVote } from "@/hooks/vote.hook";
 import { IApiResponse, IPost } from "@/types";
-import { useQueryClient } from "@tanstack/react-query";
 import httpStatus from "http-status";
 import { CircleUser, SquareChevronDown, SquareChevronUp } from "lucide-react";
 import Image from "next/image";
@@ -24,7 +24,6 @@ import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
 import styles from "./PostDetailsCard.module.css";
-import CommentsContainer from "@/components/comment/CommentsContainer";
 
 interface IProps {
   post: IPost;
@@ -33,7 +32,7 @@ interface IProps {
 const PostDetailsCard = ({ post }: IProps) => {
   const { mutate: handleProcessVote, isPending: processVotePending } =
     useProcesssVote();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const handleVoteClick = (voteType: "upvote" | "downvote") => {
     if (voteType === "upvote") {
@@ -70,7 +69,7 @@ const PostDetailsCard = ({ post }: IProps) => {
     handleProcessVote(voteData, {
       onSuccess: (res: IApiResponse<{ message: string }>) => {
         if (res.statusCode === httpStatus.OK) {
-          queryClient.invalidateQueries({ queryKey: ["ALL_POSTS_NEWSFEED"] });
+          // queryClient.invalidateQueries({ queryKey: ["ALL_POSTS_NEWSFEED"] });
         } else {
           toast.error(res.message);
         }

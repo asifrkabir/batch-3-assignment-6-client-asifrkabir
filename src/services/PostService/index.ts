@@ -84,3 +84,41 @@ export const createPost = async (postData: FormData) => {
     throw new Error(error.message || "Unknown error occurred");
   }
 };
+
+export const updatePost = async (postData: any) => {
+  try {
+    const { data } = await axiosInstance.put<IApiResponse<IPost>>(
+      `/posts/${postData.postId}`,
+      postData.formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    return data;
+  } catch (error: any) {
+    if (error.response) {
+      const responseData = error.response.data as IApiResponse<null>;
+
+      return responseData;
+    }
+
+    throw new Error(error.message || "Unknown error occurred");
+  }
+};
+
+export const deletePost = async (postData: IPost) => {
+  try {
+    const { data } = await axiosInstance.delete<IApiResponse<IPost>>(
+      `/posts/${postData._id}`
+    );
+
+    return data;
+  } catch (error: any) {
+    if (error.response) {
+      const responseData = error.response.data as IApiResponse<null>;
+
+      return responseData;
+    }
+
+    throw new Error(error.message || "Unknown error occurred");
+  }
+};

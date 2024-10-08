@@ -22,7 +22,7 @@ const navItems = [
   },
   {
     label: "Profile",
-    href: "/user-dashboard/profile",
+    href: "/user-dashboard/my-profile",
     icon: <CircleUser className="h-5 w-5" />,
   },
   {

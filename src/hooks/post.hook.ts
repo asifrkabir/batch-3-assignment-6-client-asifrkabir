@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   createPost,
+  deletePost,
   getAllPosts,
   getAllPostsForNewsfeed,
   getPostByIdForUser,
+  updatePost,
 } from "@/services/PostService";
-import { IQueryParam } from "@/types";
+import { IPost, IQueryParam } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetAllPosts = () => {
@@ -36,6 +38,32 @@ export const useCreatePost = () => {
   return useMutation<any, Error, FormData>({
     mutationKey: ["CREATE_POST"],
     mutationFn: async (postData) => await createPost(postData),
+    onSuccess: (data) => {
+      return data;
+    },
+    onError: (error) => {
+      return error;
+    },
+  });
+};
+
+export const useUpdatePost = () => {
+  return useMutation<any, Error, any>({
+    mutationKey: ["UPDATE_POST"],
+    mutationFn: async (postData) => await updatePost(postData),
+    onSuccess: (data) => {
+      return data;
+    },
+    onError: (error) => {
+      return error;
+    },
+  });
+};
+
+export const useDeletePost = () => {
+  return useMutation<any, Error, IPost>({
+    mutationKey: ["DELETE_POST"],
+    mutationFn: async (postData) => await deletePost(postData),
     onSuccess: (data) => {
       return data;
     },
