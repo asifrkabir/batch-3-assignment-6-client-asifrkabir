@@ -1,6 +1,6 @@
 import DashboardNavbar from "@/components/ui/Dashboard/DashboardNavbar/DashboardNavbar";
 import DashboardSidebar from "@/components/ui/Dashboard/DashboardSidebar/DashboardSidebar";
-import { Cat, CircleUser, LineChart, Newspaper } from "lucide-react";
+import { Cat, CircleUser, Newspaper } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -24,11 +24,6 @@ const navItems = [
     label: "Profile",
     href: "/user-dashboard/my-profile",
     icon: <CircleUser className="h-5 w-5" />,
-  },
-  {
-    label: "Analytics",
-    href: "/user-dashboard/analytics",
-    icon: <LineChart className="h-5 w-5" />,
   },
 ];
 
