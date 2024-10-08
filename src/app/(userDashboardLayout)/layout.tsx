@@ -16,8 +16,8 @@ const navItems = [
     icon: <Cat className="h-5 w-5" />,
   },
   {
-    label: "My Posts",
-    href: "/user-dashboard/my-posts",
+    label: "Following",
+    href: "/user-dashboard/following",
     icon: <Newspaper className="h-5 w-5" />,
   },
   {

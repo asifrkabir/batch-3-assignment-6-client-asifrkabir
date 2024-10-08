@@ -3,6 +3,7 @@ import {
   createPost,
   deletePost,
   getAllPosts,
+  getAllPostsForFollowingNewsfeed,
   getAllPostsForNewsfeed,
   getPostByIdForUser,
   updatePost,
@@ -21,6 +22,15 @@ export const useGetAllPostsForNewsfeed = (params?: IQueryParam[]) => {
   return useQuery({
     queryKey: ["ALL_POSTS_NEWSFEED"],
     queryFn: async () => await getAllPostsForNewsfeed(params),
+  });
+};
+
+export const useGetAllPostsForFollowingNewsfeed = (params?: IQueryParam[]) => {
+  return useQuery({
+    queryKey: ["ALL_POSTS_FOLLOWING_NEWSFEED"],
+    queryFn: async () => await getAllPostsForFollowingNewsfeed(params),
+    refetchOnMount: "always",
+    staleTime: 0,
   });
 };
 

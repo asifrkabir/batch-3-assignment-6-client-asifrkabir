@@ -2,9 +2,10 @@
 import {
   checkIfUserFollowsAnotherUser,
   follow,
+  getAllFollows,
   unfollow,
 } from "@/services/FollowService";
-import { IFollow } from "@/types";
+import { IFollow, IQueryParam } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useFollow = () => {
@@ -40,5 +41,12 @@ export const useCheckIfUserFollowsAnotherUser = (toBeFollowedId: string) => {
     enabled: !!toBeFollowedId,
     refetchOnMount: "always",
     staleTime: 0,
+  });
+};
+
+export const useGetAllFollows = (params?: IQueryParam[]) => {
+  return useQuery({
+    queryKey: ["GET_ALL_FOLLOWS"],
+    queryFn: async () => await getAllFollows(params),
   });
 };
