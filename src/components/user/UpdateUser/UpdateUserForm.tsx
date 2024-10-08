@@ -69,7 +69,8 @@ export function UpdateUserForm({ closeModal, user }: IProps) {
 
     const userData = {
       ...data,
-      profilePicture: existingImageUrls.length > 0 ? existingImageUrls : null,
+      profilePicture:
+        existingImageUrls.length > 0 ? existingImageUrls[0] : null,
     };
 
     formData.append("data", JSON.stringify(userData));
