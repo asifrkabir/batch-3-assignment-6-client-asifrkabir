@@ -18,7 +18,6 @@ import httpStatus from "http-status";
 import {
   CircleUser,
   Eye,
-  Pencil,
   SquareChevronDown,
   SquareChevronUp,
   Trash2,
@@ -30,6 +29,7 @@ import PaymentModal from "../../payment/PaymentModal";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
+import UpdatePostModal from "../UpdatePost/UpdatePostModal";
 import styles from "./PostCard.module.css";
 
 interface IProps {
@@ -120,9 +120,7 @@ const PostCard = ({ post, loggedInUser }: IProps) => {
 
         {loggedInUser && loggedInUser.userId === post.author._id && (
           <div className="flex flex-row items-center">
-            <Button className="text-default bg-default hover:bg-muted-foreground">
-              <Pencil className="h-4 w-4" />
-            </Button>
+            <UpdatePostModal post={post} />
             <Button className="text-red-500 bg-default">
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -147,6 +145,8 @@ const PostCard = ({ post, loggedInUser }: IProps) => {
 
       {/* Body - Image and Content Preview */}
       <CardContent className="p-4">
+        <h2 className="text-xl font-bold mb-8">{post.title}</h2>
+
         {/* Image Grid */}
         {post.imageUrls && post.imageUrls.length > 0 && (
           <div className="grid xs:grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2 mb-8">

@@ -134,6 +134,8 @@ const PostDetailsCard = ({ post }: IProps) => {
 
         {/* Body - Image and Full Content */}
         <CardContent className="p-4">
+          <h2 className="text-xl font-bold mb-8">{post.title}</h2>
+
           {/* Image Grid */}
           {post.imageUrls && post.imageUrls.length > 0 && (
             <div className="grid xs:grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2 mb-8">
