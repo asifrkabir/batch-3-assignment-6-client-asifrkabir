@@ -6,6 +6,7 @@ import {
   getAllPostsForFollowingNewsfeed,
   getAllPostsForNewsfeed,
   getPostByIdForUser,
+  togglePostPublish,
   updatePost,
 } from "@/services/PostService";
 import { IQueryParam } from "@/types";
@@ -13,7 +14,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetAllPosts = () => {
   return useQuery({
-    queryKey: ["ALL_POSTS"],
+    queryKey: ["GET_ALL_POSTS"],
     queryFn: async () => await getAllPosts(),
   });
 };
@@ -74,6 +75,19 @@ export const useDeletePost = () => {
   return useMutation<any, Error, any>({
     mutationKey: ["DELETE_POST"],
     mutationFn: async (postData) => await deletePost(postData),
+    onSuccess: (data) => {
+      return data;
+    },
+    onError: (error) => {
+      return error;
+    },
+  });
+};
+
+export const useTogglePostPublish = () => {
+  return useMutation<any, Error, any>({
+    mutationKey: ["TOGGLE_POST_PUBLISH"],
+    mutationFn: async (postData) => await togglePostPublish(postData),
     onSuccess: (data) => {
       return data;
     },

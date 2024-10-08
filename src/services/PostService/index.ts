@@ -151,3 +151,22 @@ export const deletePost = async (postData: { _id: string }) => {
     throw new Error(error.message || "Unknown error occurred");
   }
 };
+
+export const togglePostPublish = async (postData: any) => {
+  try {
+    const { data } = await axiosInstance.put<IApiResponse<IPost>>(
+      `/posts/${postData._id}/publish`,
+      postData.data
+    );
+
+    return data;
+  } catch (error: any) {
+    if (error.response) {
+      const responseData = error.response.data as IApiResponse<null>;
+
+      return responseData;
+    }
+
+    throw new Error(error.message || "Unknown error occurred");
+  }
+};
