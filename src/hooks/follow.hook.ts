@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { follow } from "@/services/FollowService";
+import {
+  checkIfUserFollowsAnotherUser,
+  follow,
+  unfollow,
+} from "@/services/FollowService";
 import { IFollow } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useFollow = () => {
   return useMutation<any, Error, IFollow>({
@@ -13,5 +17,28 @@ export const useFollow = () => {
     onError: (error) => {
       return error;
     },
+  });
+};
+
+export const useUnfollow = () => {
+  return useMutation<any, Error, IFollow>({
+    mutationKey: ["UNFOLLOW"],
+    mutationFn: async (followData) => await unfollow(followData),
+    onSuccess: (data) => {
+      return data;
+    },
+    onError: (error) => {
+      return error;
+    },
+  });
+};
+
+export const useCheckIfUserFollowsAnotherUser = (toBeFollowedId: string) => {
+  return useQuery({
+    queryKey: ["CHECK_IF_USER_FOLLOWS_ANOTHER_USER", toBeFollowedId],
+    queryFn: async () => await checkIfUserFollowsAnotherUser(toBeFollowedId),
+    enabled: !!toBeFollowedId,
+    refetchOnMount: "always",
+    staleTime: 0,
   });
 };
