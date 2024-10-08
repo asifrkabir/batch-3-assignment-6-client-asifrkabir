@@ -25,11 +25,6 @@ import AppForm from "../form/AppForm";
 import AppInput from "../form/AppInput";
 import LoadingSpinner from "../ui/LoadingSpinner/LoadingSpinner";
 
-const defaultValues = {
-  email: "john.user4@example.com",
-  password: "password123",
-};
-
 export function LoginForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -85,7 +80,6 @@ export function LoginForm() {
         <CardContent>
           <div className="grid gap-4">
             <AppForm
-              defaultValues={defaultValues}
               onSubmit={handleSubmit}
               resolver={zodResolver(loginValidationSchema)}
             >

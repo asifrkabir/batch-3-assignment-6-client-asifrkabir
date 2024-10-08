@@ -28,13 +28,6 @@ import AppTextarea from "../form/AppTextarea";
 import LoadingSpinner from "../ui/LoadingSpinner/LoadingSpinner";
 import React from "react";
 
-const defaultValues = {
-  name: "John User 5",
-  email: "john.user5@example.com",
-  password: "password123",
-  bio: "This is my bio",
-};
-
 export function RegisterForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
@@ -108,7 +101,6 @@ export function RegisterForm() {
         <CardContent>
           <div className="grid gap-4">
             <AppForm
-              defaultValues={defaultValues}
               onSubmit={handleSubmit}
               resolver={zodResolver(registerValidationSchema)}
             >
