@@ -31,7 +31,6 @@ const CommonNavbar = () => {
           <Link
             href="/"
             className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-            prefetch={false}
           >
             Home
           </Link>
@@ -56,16 +55,20 @@ const CommonNavbar = () => {
           <Link
             href="/about-us"
             className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-            prefetch={false}
           >
             About
           </Link>
           <Link
             href="/contact-us"
             className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-            prefetch={false}
           >
             Contact
+          </Link>
+          <Link
+            href="/nutrition"
+            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+          >
+            Nutrition
           </Link>
         </nav>
         <div className="flex items-center gap-4">

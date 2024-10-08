@@ -23,8 +23,6 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import AppForm from "../form/AppForm";
 import AppInput from "../form/AppInput";
-import { Label } from "../ui/label";
-import React from "react";
 import LoadingSpinner from "../ui/LoadingSpinner/LoadingSpinner";
 
 const defaultValues = {
@@ -100,18 +98,8 @@ export function LoginForm() {
               />
 
               <div>
-                <div className="flex items-center">
-                  <Label htmlFor="password">
-                    Password <span className="text-red-500">*</span>
-                  </Label>
-                  <Link
-                    href="#"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
                 <AppInput
+                  label="Password"
                   name="password"
                   type="password"
                   placeholder="Enter your password"
