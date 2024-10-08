@@ -39,7 +39,7 @@ const PaymentModal = ({ post }: IProps) => {
           <LockOpen /> Purchase
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-1/2">
+      <DialogContent className="lg:max-w-screen-lg">
         <DialogHeader>
           <DialogTitle>Purchase Post</DialogTitle>
           <VisuallyHidden>

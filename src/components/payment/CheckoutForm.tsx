@@ -133,7 +133,7 @@ const CheckoutForm = ({ postId, onPaymentSuccess }: IProps) => {
   };
 
   return (
-    <Card className="max-w-md mx-auto p-6 rounded-lg shadow-lg">
+    <Card className="w-full mx-auto p-6 rounded-lg shadow-lg">
       <CardHeader>
         <h3 className="text-xl font-semibold text-center mb-4">
           Complete Your Payment
