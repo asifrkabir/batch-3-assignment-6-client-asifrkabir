@@ -105,7 +105,7 @@ export const updatePost = async (postData: any) => {
   }
 };
 
-export const deletePost = async (postData: IPost) => {
+export const deletePost = async (postData: { _id: string }) => {
   try {
     const { data } = await axiosInstance.delete<IApiResponse<IPost>>(
       `/posts/${postData._id}`

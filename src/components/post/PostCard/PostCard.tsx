@@ -20,7 +20,6 @@ import {
   Eye,
   SquareChevronDown,
   SquareChevronUp,
-  Trash2,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +30,7 @@ import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
 import UpdatePostModal from "../UpdatePost/UpdatePostModal";
 import styles from "./PostCard.module.css";
+import { DeletePostModal } from "../DeletePost/DeletePostModal";
 
 interface IProps {
   post: IPost;
@@ -121,9 +121,7 @@ const PostCard = ({ post, loggedInUser }: IProps) => {
         {loggedInUser && loggedInUser.userId === post.author._id && (
           <div className="flex flex-row items-center">
             <UpdatePostModal post={post} />
-            <Button className="text-red-500 bg-default">
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <DeletePostModal post={post} />
           </div>
         )}
 

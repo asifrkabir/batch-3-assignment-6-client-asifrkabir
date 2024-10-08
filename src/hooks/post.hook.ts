@@ -7,7 +7,7 @@ import {
   getPostByIdForUser,
   updatePost,
 } from "@/services/PostService";
-import { IPost, IQueryParam } from "@/types";
+import { IQueryParam } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetAllPosts = () => {
@@ -61,7 +61,7 @@ export const useUpdatePost = () => {
 };
 
 export const useDeletePost = () => {
-  return useMutation<any, Error, IPost>({
+  return useMutation<any, Error, any>({
     mutationKey: ["DELETE_POST"],
     mutationFn: async (postData) => await deletePost(postData),
     onSuccess: (data) => {
