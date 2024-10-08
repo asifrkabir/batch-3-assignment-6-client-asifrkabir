@@ -2,7 +2,7 @@
 
 import { AddPostModal } from "@/components/post/AddPost/AddPostModal";
 import ProfilePostsContainer from "@/components/post/ProfilePostsContainer";
-import { UserProfileCard } from "@/components/profile/UserProfileCard";
+import { UserProfileCard } from "@/components/user/UserProfileCard";
 import LoadingSpinner from "@/components/ui/LoadingSpinner/LoadingSpinner";
 import { useUser } from "@/context/user.provider";
 import { useGetUserById } from "@/hooks/user.hook";

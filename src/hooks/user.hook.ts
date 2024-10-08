@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getUserById } from "@/services/UserService";
-import { useQuery } from "@tanstack/react-query";
+import { getUserById, updateUser } from "@/services/UserService";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetUserById = (userId: string) => {
   return useQuery({
@@ -9,5 +9,18 @@ export const useGetUserById = (userId: string) => {
     enabled: !!userId,
     refetchOnMount: "always",
     staleTime: 0,
+  });
+};
+
+export const useUpdateUser = () => {
+  return useMutation<any, Error, any>({
+    mutationKey: ["UPDATE_USER"],
+    mutationFn: async (userData) => await updateUser(userData),
+    onSuccess: (data) => {
+      return data;
+    },
+    onError: (error) => {
+      return error;
+    },
   });
 };

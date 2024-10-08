@@ -21,3 +21,23 @@ export const getUserById = async (userId: string) => {
     throw new Error(error.message || "Unknown error occurred");
   }
 };
+
+export const updateUser = async (userData: any) => {
+  try {
+    const { data } = await axiosInstance.put<IApiResponse<IUser>>(
+      `/users`,
+      userData.formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    return data;
+  } catch (error: any) {
+    if (error.response) {
+      const responseData = error.response.data as IApiResponse<null>;
+
+      return responseData;
+    }
+
+    throw new Error(error.message || "Unknown error occurred");
+  }
+};
