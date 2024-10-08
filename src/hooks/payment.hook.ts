@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createPayment, createPaymentIntent } from "@/services/PaymentService";
-import { IPayment, IPaymentIntent } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import {
+  createPayment,
+  createPaymentIntent,
+  getAllPayments,
+} from "@/services/PaymentService";
+import { IPayment, IPaymentIntent, IQueryParam } from "@/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useCreatePaymentIntent = () => {
   return useMutation<any, Error, IPaymentIntent>({
@@ -27,5 +31,12 @@ export const useCreatePayment = () => {
     onError: (error) => {
       return error;
     },
+  });
+};
+
+export const useGetAllPayments = (params?: IQueryParam[]) => {
+  return useQuery({
+    queryKey: ["GET_ALL_PAYMENTS"],
+    queryFn: async () => await getAllPayments(params),
   });
 };

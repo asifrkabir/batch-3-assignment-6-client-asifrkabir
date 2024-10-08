@@ -26,7 +26,6 @@ const PostDataTable = ({ posts }: IProps) => {
   const { mutate: togglePostPublish } = useTogglePostPublish();
   const queryClient = useQueryClient();
 
-  // Local state for tracking loading per post
   const [loadingPostId, setLoadingPostId] = useState<string | null>(null);
 
   const handleTogglePostPublish = (postId: string, isPublished: boolean) => {
@@ -57,7 +56,7 @@ const PostDataTable = ({ posts }: IProps) => {
         );
       },
       onSettled: () => {
-        setLoadingPostId(null); // Reset loading state for the current post
+        setLoadingPostId(null);
       },
     });
   };
@@ -76,14 +75,14 @@ const PostDataTable = ({ posts }: IProps) => {
         <TableBody>
           {posts.map((post) => (
             <TableRow key={post._id}>
-              <TableCell>{post.title}</TableCell>
-              <TableCell>{post.category}</TableCell>
+              <TableCell>{post?.title}</TableCell>
+              <TableCell>{post?.category}</TableCell>
               <TableCell>
                 <div className="flex items-center">
                   {post.author.profilePicture ? (
                     <Image
-                      src={post.author.profilePicture}
-                      alt={post.author.name || "Author Profile"}
+                      src={post?.author?.profilePicture}
+                      alt={post?.author?.name || "Author Profile"}
                       className="rounded-full mr-2"
                       width={30}
                       height={30}
@@ -91,20 +90,20 @@ const PostDataTable = ({ posts }: IProps) => {
                   ) : (
                     <CircleUser className="h-7 w-7 mr-2" />
                   )}
-                  {post.author.name || "Unknown Author"}
+                  {post?.author?.name || "Unknown Author"}
                 </div>
               </TableCell>
               <TableCell>
                 <Button
-                  variant={post.isPublished ? "outline" : "default"}
+                  variant={post?.isPublished ? "outline" : "default"}
                   onClick={() =>
-                    handleTogglePostPublish(post._id, post.isPublished)
+                    handleTogglePostPublish(post?._id, post?.isPublished)
                   }
-                  disabled={loadingPostId === post._id}
+                  disabled={loadingPostId === post?._id}
                 >
                   {loadingPostId === post._id ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : post.isPublished ? (
+                  ) : post?.isPublished ? (
                     "Unpublish"
                   ) : (
                     "Publish"

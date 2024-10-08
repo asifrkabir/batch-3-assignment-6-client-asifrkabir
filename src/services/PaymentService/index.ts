@@ -2,9 +2,11 @@
 "use server";
 
 import axiosInstance from "@/lib/AxiosInstance";
-import { IApiResponse, IPayment, IPaymentIntent } from "@/types";
+import { IApiResponse, IPayment, IPaymentIntent, IQueryParam } from "@/types";
 
-export const createPaymentIntent = async (paymentIntentData: IPaymentIntent) => {
+export const createPaymentIntent = async (
+  paymentIntentData: IPaymentIntent
+) => {
   try {
     const { data } = await axiosInstance.post(
       "/payments/create-payment-intent",
@@ -28,6 +30,33 @@ export const createPayment = async (paymentData: IPayment) => {
     const { data } = await axiosInstance.post<IApiResponse<IPayment>>(
       "/payments",
       paymentData
+    );
+
+    return data;
+  } catch (error: any) {
+    if (error.response) {
+      const responseData = error.response.data as IApiResponse<null>;
+
+      return responseData;
+    }
+
+    throw new Error(error.message || "Unknown error occurred");
+  }
+};
+
+export const getAllPayments = async (params?: IQueryParam[]) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (params) {
+      params.forEach((item) => {
+        queryParams.append(item.name, item.value as string);
+      });
+    }
+
+    const { data } = await axiosInstance.get<IApiResponse<IPayment[]>>(
+      "/payments",
+      { params: queryParams }
     );
 
     return data;

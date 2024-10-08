@@ -21,14 +21,14 @@ const navItems = [
     icon: <Newspaper className="h-5 w-5" />,
   },
   {
-    label: "Profile",
-    href: "/admin-dashboard/profile",
-    icon: <CircleUser className="h-5 w-5" />,
-  },
-  {
     label: "Payment History",
     href: "/admin-dashboard/payment-history",
     icon: <CreditCard className="h-5 w-5" />,
+  },
+  {
+    label: "Profile",
+    href: "/admin-dashboard/profile",
+    icon: <CircleUser className="h-5 w-5" />,
   },
 ];
 

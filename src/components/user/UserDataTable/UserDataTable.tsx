@@ -90,11 +90,11 @@ const UserDataTable = ({ users }: IProps) => {
                   ) : (
                     <CircleUser className="h-7 w-7 mr-2" />
                   )}
-                  {user.name}
+                  {user?.name}
                 </div>
               </TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.role}</TableCell>
+              <TableCell>{user?.email}</TableCell>
+              <TableCell>{user?.role}</TableCell>
               <TableCell>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
