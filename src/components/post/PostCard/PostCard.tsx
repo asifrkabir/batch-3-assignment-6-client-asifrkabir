@@ -96,25 +96,27 @@ const PostCard = ({ post, loggedInUser }: IProps) => {
     <Card className="relative flex flex-col rounded-lg border w-full h-auto transition-shadow hover:shadow-md">
       {/* Header - Author Info */}
       <CardHeader className="flex flex-row justify-between items-center p-4">
-        <div className="flex flex-row items-center">
-          {post.author?.profilePicture ? (
-            <Image
-              src={post.author.profilePicture}
-              alt={post.author.name!}
-              width={40}
-              height={40}
-              className="rounded-full border-2 border-yellow-500"
-            />
-          ) : (
-            <CircleUser className="h-10 w-10 text-gray-400" />
-          )}
-          <div className="ml-3">
-            <p className="font-bold text-default">{post.author?.name}</p>
-            <p className="text-sm text-default text-muted-foreground">
-              Posted on: {new Date(post.createdAt).toLocaleDateString()}
-            </p>
+        <Link href={`/user-dashboard/profile/${post.author._id!.toString()}`}>
+          <div className="flex flex-row items-center">
+            {post.author?.profilePicture ? (
+              <Image
+                src={post.author.profilePicture}
+                alt={post.author.name!}
+                width={40}
+                height={40}
+                className="rounded-full border-2 border-yellow-500"
+              />
+            ) : (
+              <CircleUser className="h-10 w-10 text-gray-400" />
+            )}
+            <div className="ml-3">
+              <p className="font-bold text-default">{post.author?.name}</p>
+              <p className="text-sm text-default text-muted-foreground">
+                Posted on: {new Date(post.createdAt).toLocaleDateString()}
+              </p>
+            </div>
           </div>
-        </div>
+        </Link>
 
         <div className="flex-grow" />
 

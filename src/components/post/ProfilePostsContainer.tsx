@@ -14,7 +14,10 @@ interface IProps {
 
 const ProfilePostsContainer = ({ user }: IProps) => {
   const [params, setParams] = useState<IQueryParam[]>([
-    { name: "author", value: user?.userId!.toString() },
+    {
+      name: "author",
+      value: user?._id ? user?._id!.toString() : user?.userId!.toString(),
+    },
     { name: "sort", value: "-upvotes" },
   ]);
 
