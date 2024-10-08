@@ -7,11 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useUser } from "@/context/user.provider";
-import { IUser } from "@/types";
-import { CircleUser } from "lucide-react";
+import { IApiResponse, IUser } from "@/types";
+import { CircleUser, Loader2 } from "lucide-react";
 import Image from "next/image";
 import UpdateUserModal from "./UpdateUser/UpdateUserModal";
 import LoadingSpinner from "../ui/LoadingSpinner/LoadingSpinner";
+import { useFollow } from "@/hooks/follow.hook";
+import httpStatus from "http-status";
+import { toast } from "sonner";
 
 interface IProps {
   user: IUser;
@@ -19,9 +22,23 @@ interface IProps {
 
 export function UserProfileCard({ user }: IProps) {
   const { user: loggedInUser, isLoading: isUserLoading } = useUser();
+  const { mutate: follow, isPending: isFollowPending } = useFollow();
 
   const handleFollow = () => {
-    console.log("Follow user:", user._id);
+    const followData = {
+      following: user._id!,
+    };
+
+    follow(followData, {
+      onSuccess: (res: IApiResponse<{ message: string }>) => {
+        if (res.statusCode !== httpStatus.CREATED) {
+          toast.error(res.message);
+        }
+      },
+      onError: (error) => {
+        toast.error(error.message || "Follow failed. Please try again.");
+      },
+    });
   };
 
   if (isUserLoading && !loggedInUser) {
@@ -59,8 +76,16 @@ export function UserProfileCard({ user }: IProps) {
 
       <CardContent className="flex justify-center">
         {loggedInUser?.userId !== user._id ? (
-          <Button onClick={handleFollow} className="max-w-sm">
-            Follow
+          <Button
+            onClick={handleFollow}
+            className="max-w-sm"
+            disabled={isFollowPending}
+          >
+            {isFollowPending ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Follow"
+            )}
           </Button>
         ) : (
           <UpdateUserModal user={loggedInUser!} />

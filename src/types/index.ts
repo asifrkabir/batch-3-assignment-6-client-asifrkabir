@@ -6,3 +6,4 @@ export * from "./post.type";
 export * from "./vote.type";
 export * from "./payment.type";
 export * from "./comment.type";
+export * from "./follow.type";
